@@ -60,7 +60,7 @@ export class LoginComponent implements OnInit {
       "password": "Password@123",
       "phone": "8794785959",
       "role": "ADMIN",
-      "createDate": "1999-04-04",
+      "createDate": new Date().toDateString,// "1999-04-04",
       "createdBy": "admin"
 
     };

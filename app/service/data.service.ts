@@ -46,7 +46,7 @@ export class DataService {
     if (csrf != null && csrf.length > 0) {
       headers = headers.append("header", csrf);
     }
-    return this.httpClient.get<any>(environment.apiURL + url, dataToSend, { headers: headers, responseType: 'json' })
+    return this.httpClient.get<any>(environment.apiURL + url, dataToSend)
   }
 
   getData(dataToSend: any, url: string): Observable<any> {

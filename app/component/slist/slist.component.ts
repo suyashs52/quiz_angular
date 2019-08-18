@@ -1,15 +1,19 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { HeaderComponent } from '../header/header.component'
 import { Pagination } from '../../class/Pagination'
+import { User } from '../../class/User'
+import { formatDate } from '@angular/common';
 @Component({
   selector: 'app-slist',
   templateUrl: './slist.component.html',
   styleUrls: ['./slist.component.css']
-})
+}) 
 export class SlistComponent implements OnInit {
 
   public pageForUser: Pagination;
-
+  public user: User[] = [];
+  modalHeader: string;
+  modalpasssword: string;
 
   @ViewChild(HeaderComponent) header: HeaderComponent;
   constructor() { }
@@ -17,8 +21,8 @@ export class SlistComponent implements OnInit {
   ngOnInit() {
     this.initPagination();
     console.log(this.header.loader);
-this.getAllUser();
-
+    this.getAllUser();
+     
   }
   initPagination() {
     this.pageForUser = new Pagination();
@@ -41,47 +45,106 @@ this.getAllUser();
         break;
     }
   }
+
+  userdetails(event) {
+
+    let dom: any = document.querySelectorAll('a.nav-item');
+    console.log(dom);
+    
+    for (let d = 0; d < dom.length; d++) {
+      console.log(d);
+
+      dom[d].className = "nav-item nav-link";
+    }
+    event.target.class = "nav-item nav-link active";
+    this.getAllUser();
+
+  }
+  saveUser:User;
+  edituserDetail(user: User) {
+    this.modalHeader = "Edit " + user.name;
+    console.log(user);
+    this.saveUser=user;
+   
+    
+  }
+  saveuserDetail(){
+    var date= formatDate(new Date(),'yyyy-MM-dd','en');
+    var datatosend = {
+      "id":this.saveUser.id,
+      "username":  this.saveUser.username,
+      "name":  this.saveUser.name,
+      "credential": this.modalpasssword,
+      "password": "Passwd@123",
+      "phone":  this.saveUser.phone,
+      "role":  this.saveUser.role,
+      "createDate":date,// | asdf,// "1999-04-04",
+      "createdBy": "admin"
+
+    };
+
+
+    this.header.dataService.getData(datatosend, "updateuser").subscribe((resp) => {
+      //loader=false
+      this.header.handleSuccess("save successfully.");
+    },
+    error => {
+      if(error=="OK"){
+        this.header.handleSuccess("password changed successfully.");
+      }else{
+        this.header.handleError(error);
+      }
+    
+      console.log(error);
+      
+    
+    });
+    this.modalpasssword="";
+  }
+
+  questionList(event) {
+    let dom: any = document.querySelectorAll('a.nav-item');
+    for (let d = 0; d < dom.length; d++) {
+      console.log(d);
+
+      dom[d].className = "nav-item nav-link";
+    }
+    event.target.class = "nav-item nav-link active";
+    console.log(event.target);
+
+  }
+
   getAllUser() {
     //this.pageForUser.cur-1
     //after data
-    // this.pageForUser.first=1;
-    // this.pageForUser.cur=this.dataresp.data["currentpage"];
-    // this.pageForUser.last=this.dataresp.data["pageCount"];
 
-    var datatosend = {"pageNo":1};
+
+    var datatosend = { "pageNo": 1 };
 
 
     this.header.error = "";
     this.header.loader = true;
-    this.header.dataService.getData(datatosend, "logins").subscribe(data => {
-    },
-    error => {
-      this.handleError(error);
-    });
-    this.header.dataService.getMtdData(datatosend, "users/"+(this.pageForUser.cur-1)).subscribe(data => {
+    // this.header.dataService.getData(datatosend, "logins").subscribe(data => {
+    // },
+    // error => {
+    //   this.handleError(error);
+    // });
+    this.header.dataService.getMtdData(datatosend, "users/" + (this.pageForUser.cur - 1)).subscribe(data => {
       // this.router.navigate([this.returnUrl]);
       console.log(data);
+      this.pageForUser.first = 1;
+      this.pageForUser.cur = data["page"];
+      this.pageForUser.last = data["count"];
+      this.user = data["content"];
+      console.log(this.user);
+
       this.header.loader = false;
 
     },
       error => {
-        this.handleError(error);
+        this.header.handleError(error);
+        
       });
   }
 
-  handleError(error: any) {
-    this.header.loader = false;
-    this.header.showError = false;
-    console.log(error);
-    this.header.showError = true;
-    this.header.error = error;
-
-    window.scroll(0, 0);
-    setTimeout(() => {
-      this.header.showError = false;
-
-    }, 10000)
-
-
-  }
 }

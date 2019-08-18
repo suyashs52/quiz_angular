@@ -1,3 +1,6 @@
+<div class="container">
+  <app-header #header></app-header>
+</div>
 <section class="testimonial py-5" id="testimonial">
   <div class="container">
     <div class="row ">
@@ -6,15 +9,16 @@
           <div class="card-body">
             <img src="../../../assets/img/registration_bg.svg" style="width:30%">
             <h2 class="py-3">Registration</h2>
-            <p>Tation argumentum et usu, dicit viderer evertitur te has. Eu dictas concludaturque usu, facete detracto
-              patrioque an per, lucilius pertinacia eu vel.
+            <p> Save user for quiz , phone should be of 10 numbers. password should be alpha numeric
+              with @/# , phone and username should be unique
+
 
             </p>
           </div>
         </div>
       </div>
       <div class="col-md-8 py-5 border">
-        <h4 class="pb-4">Please fill with your details</h4>
+        <h4 class="pb-4">Please fill details</h4>
         <form>
 
 
@@ -24,7 +28,7 @@
               <div class="input-group-prepend">
                 <span class="input-group-text"> <i class="fa fa-user"></i> </span>
               </div>
-              <input name="" class="form-control" placeholder="Full name" type="text">
+              <input name="name" [(ngModel)]="saveUser.name" class="form-control" placeholder="Full name" type="text">
 
             </div>
 
@@ -32,7 +36,7 @@
               <div class="input-group-prepend">
                 <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
               </div>
-              <input name="" class="form-control" placeholder="Email address" type="email">
+              <input name="username" [(ngModel)]="saveUser.username" class="form-control" placeholder="User Name">
             </div>
 
 
@@ -43,13 +47,8 @@
               <div class="input-group-prepend">
                 <span class="input-group-text"> <i class="fa fa-phone"></i> </span>
               </div>
-              <select class="custom-select" style="max-width: 120px;">
-                <option selected="">+971</option>
-                <option value="1">+972</option>
-                <option value="2">+198</option>
-                <option value="3">+701</option>
-              </select>
-              <input name="" class="form-control" placeholder="Phone number" type="text">
+
+              <input name="phone" [(ngModel)]="saveUser.phone" class="form-control" placeholder="Phone number" type="text">
             </div>
 
 
@@ -57,16 +56,14 @@
               <div class="input-group-prepend">
                 <span class="input-group-text"> <i class="fa fa-building"></i> </span>
               </div>
-              <select class="form-control">
-                <option selected=""> Select job type</option>
-                <option>Designer</option>
-                <option>Manager</option>
-                <option>Accaunting</option>
+              <select name="role" [(ngModel)]="saveUser.role"class="form-control">
+                
+                <option value="ADMIN">Admin</option>
+                <option value="USER">User</option>
+
               </select>
             </div>
-            <div class="form-group col-md-12">
-              <textarea id="comment" name="comment" cols="40" rows="5" class="form-control"></textarea>
-            </div>
+
           </div>
           <div class="form-row">
 
@@ -74,7 +71,8 @@
               <div class="input-group-prepend">
                 <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
               </div>
-              <input class="form-control" placeholder="Create password" type="password">
+              <input class="form-control" name="password" [(ngModel)]="saveUser.password" placeholder="Create password"
+                type="password">
             </div>
 
 
@@ -82,20 +80,18 @@
               <div class="input-group-prepend">
                 <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
               </div>
-              <input class="form-control" placeholder="Create password" type="password">
+              <input class="form-control" placeholder="Create password" type="password" name="vpassword"
+                [(ngModel)]="saveUser.vpassword">
             </div>
-            <div class="form-group col-md-12">
-              <textarea id="comment" name="comment" cols="40" rows="5" class="form-control"></textarea>
-            </div>
+           
           </div>
           <div class="form-row">
             <div class="form-group">
               <div class="form-group">
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" value="" id="invalidCheck2" required>
+                  <!-- <input class="form-check-input" type="checkbox" value="" id="invalidCheck2" required> -->
                   <label class="form-check-label" for="invalidCheck2">
-                    <small>By clicking Submit, you agree to our Terms & Conditions, Visitor Agreement and Privacy
-                      Policy.</small>
+                    <small>By Successfull submit, new user will be created. </small>
                   </label>
                 </div>
               </div>
@@ -104,7 +100,7 @@
           </div>
 
           <div class="form-row">
-            <button type="button" class="btn btn-danger">Submit</button>
+            <button type="button" class="btn btn-danger" (click)="saveuserDetail()">Submit</button>
           </div>
         </form>
       </div>
